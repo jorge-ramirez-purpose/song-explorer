@@ -12,8 +12,9 @@ Always follow these patterns when writing code:
 ## Commit Message Standards
 
 1. **Never mention yourself** — keep messages impersonal (no "I", "we", co-author messages)
-2. **Keep under 50 characters** — concise titles for commits
+2. **Keep title under 50 characters** — concise titles for commits
 3. **Use commitizen structure** — format as `feat`, `fix`, `chore`, `refactor`, etc.
+4. **Always include a body** — 1–3 sentences explaining what changed and why; not exhaustive, just enough context to understand the commit without reading the diff
 
 ## Other Rules
 
