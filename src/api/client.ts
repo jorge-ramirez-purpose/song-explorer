@@ -1,9 +1,7 @@
 import { z } from 'zod'
+import { TApiListResult } from './types'
 
-export type TApiListResult<T> = {
-  data: T[]
-  total: number
-}
+
 
 export const apiGet = async <T>(
   url: string,

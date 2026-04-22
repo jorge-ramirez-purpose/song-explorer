@@ -1,5 +1,6 @@
 import { SongSchema, type TSong } from '@/types/song'
-import { apiGet, type TApiListResult } from './client'
+import { apiGet } from './client'
+import { TApiListResult } from './types'
 
 export type TFetchSongsParams = {
   start: number
