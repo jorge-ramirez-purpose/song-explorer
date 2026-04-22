@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss'
+import { colors } from './src/constants/colors'
 
 export default {
   content: [
@@ -8,13 +9,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        'green': '#6fc13e',
-        'orange': '#ff8e00',
-        'red': '#dc001c',
-        'black': '#000',
-        'dark-bg': '#101010',
-        'dark-border': '#383635',
-        'dark-text': '#939393',
+        'green': colors.green,
+        'orange': colors.orange,
+        'red': colors.red,
+        'black': colors.black,
+        'dark-bg': colors.darkBg,
+        'dark-border': colors.darkBorder,
+        'dark-text': colors.darkText,
       },
       fontFamily: {
         'sans': ['Montserrat', 'sans-serif'],

@@ -8,6 +8,8 @@ Always follow these patterns when writing code:
 2. **Use arrow functions** — no `function` keyword declarations. All components and functions are arrow functions
 3. **Type prefix with T** — all prop/type names start with T: `TComponentProps`, `TStateType`, etc.
 4. **Prefer early return over if/else** — avoid nested if/else branches; use early returns or `continue` to reduce nesting
+5. **Use full words for variable names** — avoid abbreviations like `el`, `btn`, `val`. Exception: `ref` is acceptable as it's standard React terminology
+6. **Single source of truth for constants** — colors, repeated values, and magic strings must live in a central constants file and be imported from there, never hardcoded inline
 
 ## Commit Message Standards
 
