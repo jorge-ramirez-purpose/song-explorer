@@ -12,16 +12,12 @@ export const apiGet = async <T>(
 ): Promise<TApiListResult<T>> => {
   const searchParams = new URLSearchParams()
 
-  if (params) {
-    for (const [key, value] of Object.entries(params)) {
-      if (Array.isArray(value)) {
-        for (const v of value) {
-          searchParams.append(key, v)
-        }
-      } else {
-        searchParams.set(key, String(value))
-      }
+  for (const [key, value] of Object.entries(params ?? {})) {
+    if (Array.isArray(value)) {
+      value.forEach((v) => searchParams.append(key, v))
+      continue
     }
+    searchParams.set(key, String(value))
   }
 
   const query = searchParams.toString()
