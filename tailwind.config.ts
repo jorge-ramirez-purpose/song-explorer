@@ -9,6 +9,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        'brand': colors.brand,
         'green': colors.green,
         'orange': colors.orange,
         'red': colors.red,
