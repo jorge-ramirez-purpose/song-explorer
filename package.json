@@ -12,7 +12,7 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:e2e": "playwright test",
-    "start-api": "cd api && npm start"
+    "start-api": "cd api && npm run start-api"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.35.0",

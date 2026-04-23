@@ -1,12 +1,65 @@
+import { useSongsQuery } from '@/queries/useSongsQuery'
+import { useFavoritesQuery } from '@/queries/useFavoritesQuery'
+import { useAddFavorite, useRemoveFavorite } from '@/queries/useFavoriteMutations'
+import { useFilterStore } from '@/store/useFilterStore'
 import { AppLayout } from '@/components/AppLayout'
 import { HeroSection } from '@/components/HeroSection'
+import { FilterBar } from '@/components/FilterBar'
+import { SongList } from '@/components/SongList'
 
-const App = () => (
-  <AppLayout
-    hero={<HeroSection onSearch={() => {}} />}
-    filter={<div className="h-12 bg-dark-bg" />}
-    songList={<div className="h-96 bg-black" />}
-  />
-)
+const App = () => {
+  const { selectedLevels, debouncedSearch, isFilterOpen, toggleLevel, setSearchQuery, setDebouncedSearch, toggleFilterPanel } = useFilterStore()
+
+  const { data, hasNextPage, fetchNextPage, isLoading } = useSongsQuery({
+    levels: selectedLevels.length > 0 ? selectedLevels : undefined,
+    search: debouncedSearch,
+  })
+
+  const { data: favorites = [] } = useFavoritesQuery()
+  const addFavorite = useAddFavorite()
+  const removeFavorite = useRemoveFavorite()
+
+  const songs = data?.pages.flatMap((page) => page.data) ?? []
+
+  const handleToggleFavorite = (songId: string, shouldAdd: boolean) => {
+    if (shouldAdd) {
+      addFavorite.mutate(songId)
+    } else {
+      const favorite = favorites.find((f) => f.songId === songId)
+      if (favorite) removeFavorite.mutate(favorite.id)
+    }
+  }
+
+  return (
+    <AppLayout
+      hero={
+        <HeroSection
+          onSearch={(query) => {
+            setSearchQuery(query)
+            setDebouncedSearch(query)
+          }}
+        />
+      }
+      filter={
+        <FilterBar
+          isOpen={isFilterOpen}
+          selectedLevels={selectedLevels}
+          onTogglePanel={toggleFilterPanel}
+          onToggleLevel={toggleLevel}
+        />
+      }
+      songList={
+        <SongList
+          songs={songs}
+          favorites={favorites}
+          isLoading={isLoading}
+          hasNextPage={hasNextPage ?? false}
+          onLoadMore={() => fetchNextPage()}
+          onToggleFavorite={handleToggleFavorite}
+        />
+      }
+    />
+  )
+}
 
 export default App
