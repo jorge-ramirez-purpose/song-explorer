@@ -1,10 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { addFavorite, removeFavorite } from '@/api/favorites'
 import { type TFavorite } from '@/types/favorite'
+import { useToastStore } from '@/store/useToastStore'
 import { FAVORITES_QUERY_KEY } from './useFavoritesQuery'
 
 export const useAddFavorite = () => {
   const queryClient = useQueryClient()
+  const addToast = useToastStore((state) => state.addToast)
 
   return useMutation({
     mutationFn: (songId: string) => addFavorite(songId),
@@ -19,8 +21,12 @@ export const useAddFavorite = () => {
 
       return { previous }
     },
+    onSuccess: () => {
+      addToast('Added to favorites', 'success')
+    },
     onError: (_err, _songId, ctx) => {
       queryClient.setQueryData(FAVORITES_QUERY_KEY, ctx?.previous)
+      addToast('Failed to add favorite', 'error')
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: FAVORITES_QUERY_KEY })
@@ -30,6 +36,7 @@ export const useAddFavorite = () => {
 
 export const useRemoveFavorite = () => {
   const queryClient = useQueryClient()
+  const addToast = useToastStore((state) => state.addToast)
 
   return useMutation({
     mutationFn: (id: number) => removeFavorite(id),
@@ -43,8 +50,12 @@ export const useRemoveFavorite = () => {
 
       return { previous }
     },
+    onSuccess: () => {
+      addToast('Removed from favorites', 'success')
+    },
     onError: (_err, _id, ctx) => {
       queryClient.setQueryData(FAVORITES_QUERY_KEY, ctx?.previous)
+      addToast('Failed to remove favorite', 'error')
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: FAVORITES_QUERY_KEY })
