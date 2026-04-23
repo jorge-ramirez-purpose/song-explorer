@@ -8,9 +8,10 @@ type TProps = {
   isFavorite: boolean
   onToggleFavorite: () => void
   isEven: boolean
+  isFavoritesLoading: boolean
 }
 
-export const SongCard = ({ song, isFavorite, onToggleFavorite, isEven }: TProps) => (
+export const SongCard = ({ song, isFavorite, onToggleFavorite, isEven, isFavoritesLoading }: TProps) => (
   <div className={cn('flex items-center gap-4 px-6 py-4 border-b border-dark-border', isEven ? 'bg-dark-bg' : 'bg-black')}>
     <img
       src={song.images}
@@ -22,6 +23,6 @@ export const SongCard = ({ song, isFavorite, onToggleFavorite, isEven }: TProps)
       <p className="text-dark-text text-sm truncate">{song.artist}</p>
     </div>
     <LevelBadge level={song.level} size="large" />
-    <FavoriteButton isFavorite={isFavorite} onToggle={onToggleFavorite} />
+    <FavoriteButton isFavorite={isFavorite} isLoading={isFavoritesLoading} onToggle={onToggleFavorite} />
   </div>
 )

@@ -19,6 +19,8 @@ const App = () => {
   const addFavorite = useAddFavorite()
   const removeFavorite = useRemoveFavorite()
 
+  const isFavoritesLoading = addFavorite.isPending || removeFavorite.isPending
+
   const songs = data?.pages.flatMap((page) => page.data) ?? []
 
   const handleToggleFavorite = (songId: string, shouldAdd: boolean) => {
@@ -48,6 +50,7 @@ const App = () => {
           isLoading={isLoading}
           hasNextPage={hasNextPage ?? false}
           isError={isError}
+          isFavoritesLoading={isFavoritesLoading}
           onLoadMore={() => fetchNextPage()}
           onRetry={() => refetch()}
           onToggleFavorite={handleToggleFavorite}

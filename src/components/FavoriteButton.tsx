@@ -3,13 +3,15 @@ import { HeartOutlineIcon } from '@/components/icons/HeartOutlineIcon'
 
 type TProps = {
   isFavorite: boolean
+  isLoading: boolean
   onToggle: () => void
 }
 
-export const FavoriteButton = ({ isFavorite, onToggle }: TProps) => (
+export const FavoriteButton = ({ isFavorite, isLoading, onToggle }: TProps) => (
   <button
     onClick={onToggle}
-    className="flex items-center justify-center p-2 transition-opacity hover:opacity-80"
+    disabled={isLoading}
+    className="flex items-center justify-center p-2 transition-opacity hover:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed"
     aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
   >
     {isFavorite ? (
