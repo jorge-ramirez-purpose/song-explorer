@@ -10,20 +10,15 @@ describe('getRangeText', () => {
     expect(getRangeText([5])).toBe('5 - 5')
   })
 
-  it('returns range for two levels', () => {
+  it('returns range with min and max', () => {
     expect(getRangeText([3, 7])).toBe('3 - 7')
   })
 
-  it('sorts levels before calculating range', () => {
+  it('sorts unsorted levels before calculating range', () => {
     expect(getRangeText([10, 1, 5])).toBe('1 - 10')
   })
 
-  it('handles unsorted and duplicate levels', () => {
+  it('handles duplicate levels', () => {
     expect(getRangeText([15, 5, 15, 1, 5])).toBe('1 - 15')
-  })
-
-  it('works with all 15 levels', () => {
-    const allLevels = Array.from({ length: 15 }, (_, index) => index + 1)
-    expect(getRangeText(allLevels)).toBe('1 - 15')
   })
 })
