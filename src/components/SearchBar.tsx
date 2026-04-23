@@ -1,18 +1,16 @@
 import { useState, useEffect } from 'react'
 import { useDebounce } from '@/hooks/useDebounce'
+import { useFilterStore } from '@/store/useFilterStore'
 import { SearchIcon } from '@/components/icons/SearchIcon'
 
-type TProps = {
-  onDebouncedChange: (value: string) => void
-}
-
-export const SearchBar = ({ onDebouncedChange }: TProps) => {
+export const SearchBar = () => {
   const [value, setValue] = useState('')
   const debounced = useDebounce(value)
+  const setDebouncedSearch = useFilterStore((state) => state.setDebouncedSearch)
 
   useEffect(() => {
-    onDebouncedChange(debounced)
-  }, [debounced, onDebouncedChange])
+    setDebouncedSearch(debounced)
+  }, [debounced, setDebouncedSearch])
 
   return (
     <div className="relative w-full max-w-md mx-auto">

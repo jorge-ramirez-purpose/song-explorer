@@ -6,11 +6,7 @@ import heroMobile2x from '../../assets/yousician-hero-mobile@2x.png'
 import heroMobile3x from '../../assets/yousician-hero-mobile@3x.png'
 import { SearchBar } from '@/components/SearchBar'
 
-type TProps = {
-  onSearch: (value: string) => void
-}
-
-export const HeroSection = ({ onSearch }: TProps) => (
+export const HeroSection = () => (
   <div className="relative w-full overflow-hidden">
     <picture>
       <source
@@ -32,7 +28,7 @@ export const HeroSection = ({ onSearch }: TProps) => (
       <p className="text-white/80 text-sm md:text-base max-w-md">
         Here are the most recent additions to the Yousician App. Start playing today!
       </p>
-      <SearchBar onDebouncedChange={onSearch} />
+      <SearchBar />
     </div>
   </div>
 )

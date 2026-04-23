@@ -8,7 +8,7 @@ import { FilterBar } from '@/components/FilterBar'
 import { SongList } from '@/components/SongList'
 
 const App = () => {
-  const { selectedLevels, debouncedSearch, isFilterOpen, toggleLevel, setSearchQuery, setDebouncedSearch, toggleFilterPanel } = useFilterStore()
+  const { selectedLevels, debouncedSearch, isFilterOpen, toggleLevel, toggleFilterPanel } = useFilterStore()
 
   const { data, hasNextPage, fetchNextPage, isLoading } = useSongsQuery({
     levels: selectedLevels.length > 0 ? selectedLevels : undefined,
@@ -32,14 +32,7 @@ const App = () => {
 
   return (
     <AppLayout
-      hero={
-        <HeroSection
-          onSearch={(query) => {
-            setSearchQuery(query)
-            setDebouncedSearch(query)
-          }}
-        />
-      }
+      hero={<HeroSection />}
       filter={
         <FilterBar
           isOpen={isFilterOpen}
