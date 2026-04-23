@@ -6,6 +6,7 @@ import { AppLayout } from '@/components/AppLayout'
 import { HeroSection } from '@/components/HeroSection'
 import { FilterBar } from '@/components/FilterBar'
 import { SongList } from '@/components/SongList'
+import { ToastContainer } from '@/components/ToastContainer'
 
 const App = () => {
   const { selectedLevels, debouncedSearch, isFilterOpen, toggleLevel, toggleFilterPanel } = useFilterStore()
@@ -33,30 +34,33 @@ const App = () => {
   }
 
   return (
-    <AppLayout
-      hero={<HeroSection />}
-      filter={
-        <FilterBar
-          isOpen={isFilterOpen}
-          selectedLevels={selectedLevels}
-          onTogglePanel={toggleFilterPanel}
-          onToggleLevel={toggleLevel}
-        />
-      }
-      songList={
-        <SongList
-          songs={songs}
-          favorites={favorites}
-          isLoading={isLoading}
-          hasNextPage={hasNextPage ?? false}
-          isError={isError}
-          isFavoritesLoading={isFavoritesLoading}
-          onLoadMore={() => fetchNextPage()}
-          onRetry={() => refetch()}
-          onToggleFavorite={handleToggleFavorite}
-        />
-      }
-    />
+    <>
+      <AppLayout
+        hero={<HeroSection />}
+        filter={
+          <FilterBar
+            isOpen={isFilterOpen}
+            selectedLevels={selectedLevels}
+            onTogglePanel={toggleFilterPanel}
+            onToggleLevel={toggleLevel}
+          />
+        }
+        songList={
+          <SongList
+            songs={songs}
+            favorites={favorites}
+            isLoading={isLoading}
+            hasNextPage={hasNextPage ?? false}
+            isError={isError}
+            isFavoritesLoading={isFavoritesLoading}
+            onLoadMore={() => fetchNextPage()}
+            onRetry={() => refetch()}
+            onToggleFavorite={handleToggleFavorite}
+          />
+        }
+      />
+      <ToastContainer />
+    </>
   )
 }
 
