@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react'
 import { useDebounce } from '@/hooks/useDebounce'
 import { SearchIcon } from '@/components/icons/SearchIcon'
 
-type TSearchBarProps = {
+type TProps = {
   onDebouncedChange: (value: string) => void
 }
 
-export const SearchBar = ({ onDebouncedChange }: TSearchBarProps) => {
+export const SearchBar = ({ onDebouncedChange }: TProps) => {
   const [value, setValue] = useState('')
   const debounced = useDebounce(value)
 

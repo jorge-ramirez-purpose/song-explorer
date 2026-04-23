@@ -6,11 +6,11 @@ import heroMobile2x from '../../assets/yousician-hero-mobile@2x.png'
 import heroMobile3x from '../../assets/yousician-hero-mobile@3x.png'
 import { SearchBar } from '@/components/SearchBar'
 
-type THeroSectionProps = {
+type TProps = {
   onSearch: (value: string) => void
 }
 
-export const HeroSection = ({ onSearch }: THeroSectionProps) => (
+export const HeroSection = ({ onSearch }: TProps) => (
   <div className="relative w-full overflow-hidden">
     <picture>
       <source
