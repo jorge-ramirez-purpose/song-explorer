@@ -21,3 +21,4 @@ Always follow these patterns when writing code:
 ## Other Rules
 
 - **Plan references** — when the user says "check the plan", look in the `.plan` folder
+- **Extract util functions immediately** — any logic that could be reused, tested independently, or is larger than 2-3 lines goes into `src/utils/` or `src/hooks/`. Write tests for util functions as soon as they're extracted. Avoid hiding logic inside components.

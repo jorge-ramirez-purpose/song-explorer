@@ -1,17 +1,12 @@
 import { FilterIcon } from '@/components/icons/FilterIcon'
 import { LevelBadgeGrid } from '@/components/LevelBadgeGrid'
+import { getRangeText } from '@/utils/getRangeText'
 
 type TProps = {
   isOpen: boolean
   selectedLevels: number[]
   onTogglePanel: () => void
   onToggleLevel: (level: number) => void
-}
-
-const getRangeText = (levels: number[]): string => {
-  if (levels.length === 0) return ''
-  const sorted = [...levels].sort((a, b) => a - b)
-  return `${sorted[0]} - ${sorted[sorted.length - 1]}`
 }
 
 export const FilterBar = ({ isOpen, selectedLevels, onTogglePanel, onToggleLevel }: TProps) => (
