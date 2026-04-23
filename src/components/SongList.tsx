@@ -10,7 +10,9 @@ type TProps = {
   favorites: TFavorite[]
   isLoading: boolean
   hasNextPage: boolean
+  isError: boolean
   onLoadMore: () => void
+  onRetry: () => void
   onToggleFavorite: (songId: string, isFavorite: boolean) => void
 }
 
@@ -19,10 +21,28 @@ export const SongList = ({
   favorites,
   isLoading,
   hasNextPage,
+  isError,
   onLoadMore,
+  onRetry,
   onToggleFavorite,
 }: TProps) => {
   const favoritesMap = useMemo(() => new Map(favorites.map((favorite) => [favorite.songId, favorite.id])), [favorites])
+const shouldShowError = isError && songs.length === 0
+
+  if (shouldShowError) {
+    return (
+      <div className="flex flex-col items-center justify-center py-12 px-6">
+        <h2 className="text-white text-lg font-semibold mb-2">Failed to load songs</h2>
+        <p className="text-dark-text text-sm mb-6">Please try again</p>
+        <button
+          onClick={onRetry}
+          className="bg-brand text-black font-semibold px-6 py-2 rounded-full hover:opacity-90 transition-opacity"
+        >
+          Retry
+        </button>
+      </div>
+    )
+  }
 
   return (
     <div className="divide-y divide-dark-border">

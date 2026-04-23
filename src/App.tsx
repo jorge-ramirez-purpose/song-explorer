@@ -10,7 +10,7 @@ import { SongList } from '@/components/SongList'
 const App = () => {
   const { selectedLevels, debouncedSearch, isFilterOpen, toggleLevel, toggleFilterPanel } = useFilterStore()
 
-  const { data, hasNextPage, fetchNextPage, isLoading } = useSongsQuery({
+  const { data, hasNextPage, fetchNextPage, isLoading, isError, refetch } = useSongsQuery({
     levels: selectedLevels.length > 0 ? selectedLevels : undefined,
     search: debouncedSearch,
   })
@@ -47,7 +47,9 @@ const App = () => {
           favorites={favorites}
           isLoading={isLoading}
           hasNextPage={hasNextPage ?? false}
+          isError={isError}
           onLoadMore={() => fetchNextPage()}
+          onRetry={() => refetch()}
           onToggleFavorite={handleToggleFavorite}
         />
       }
