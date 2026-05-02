@@ -7,6 +7,7 @@ import { HeroSection } from '@/components/HeroSection'
 import { FilterBar } from '@/components/FilterBar'
 import { SongList } from '@/components/SongList'
 import { ToastContainer } from '@/components/ToastContainer'
+import { FlakeyToggle } from '@/components/FlakeyToggle'
 
 const App = () => {
   const { selectedLevels, debouncedSearch, isFilterOpen, toggleLevel, toggleFilterPanel } = useFilterStore()
@@ -60,6 +61,7 @@ const App = () => {
         }
       />
       <ToastContainer />
+      <FlakeyToggle />
     </>
   )
 }

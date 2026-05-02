@@ -1,5 +1,16 @@
+let isFlakey = false;
+
 module.exports = (req, res, next) => {
-  const reliability = 0.8; // use 1 for 100% success rate
+  if (req.path === '/flaky') {
+    if (req.method === 'POST') {
+      isFlakey = !isFlakey;
+    }
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    return res.jsonp({ isFlakey });
+  }
+
+  const reliability = isFlakey ? 0.8 : 1;
   setTimeout(function () {
     if (Math.random() > reliability) {
       res.status(500).jsonp({
