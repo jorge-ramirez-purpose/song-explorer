@@ -17,7 +17,7 @@ export const FavoriteButton = ({ isFavorite, isLoading, onToggle }: TProps) => (
     {isFavorite ? (
       <HeartIcon className="w-6 h-6 fill-red text-red" />
     ) : (
-      <HeartOutlineIcon className="w-6 h-6 text-white" />
+      <HeartOutlineIcon className="w-6 h-6 fill-white" />
     )}
   </button>
 )
