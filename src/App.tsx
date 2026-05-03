@@ -44,7 +44,7 @@ const App = () => {
   const hasActiveFilters = selectedLevels.length > 0 || !!debouncedSearch
 
   const songs = showFavoritesOnly
-    ? (favoriteSongsQuery.data?.data ?? [])
+    ? (favoriteSongIds.length === 0 ? [] : (favoriteSongsQuery.data?.data ?? []))
     : (songsQuery.data?.pages.flatMap((page) => page.data) ?? [])
 
   const handleToggleFavorite = (songId: string, shouldAdd: boolean) => {
