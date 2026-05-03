@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { readParams } from '@/hooks/useUrlParams'
 
 type TFilterStore = {
   selectedLevels: number[]
@@ -13,12 +14,14 @@ type TFilterStore = {
   clearFilters: () => void
 }
 
+const { search, levels, favorites } = readParams()
+
 export const useFilterStore = create<TFilterStore>((set) => ({
-  selectedLevels: [],
-  debouncedSearch: '',
+  selectedLevels: levels,
+  debouncedSearch: search,
   isFilterOpen: false,
   searchKey: 0,
-  showFavoritesOnly: false,
+  showFavoritesOnly: favorites,
 
   toggleLevel: (level) =>
     set((state) => ({

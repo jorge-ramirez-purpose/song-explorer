@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useSongsQuery } from '@/queries/useSongsQuery'
 import { useFavoriteSongsQuery } from '@/queries/useFavoriteSongsQuery'
 import { useFavoritesQuery } from '@/queries/useFavoritesQuery'
@@ -9,6 +10,7 @@ import { FilterBar } from '@/components/FilterBar'
 import { SongList } from '@/components/SongList'
 import { ToastContainer } from '@/components/ToastContainer'
 import { FlakeyToggle } from '@/components/FlakeyToggle'
+import { writeParams } from '@/hooks/useUrlParams'
 
 const App = () => {
   const { selectedLevels, debouncedSearch, isFilterOpen, showFavoritesOnly, toggleLevel, toggleFilterPanel, toggleFavoritesOnly, clearFilters } = useFilterStore()
@@ -41,6 +43,10 @@ const App = () => {
     if (pending) pendingSongIds.add(pending.songId)
   }
 
+  useEffect(() => {
+    writeParams({ search: debouncedSearch, levels: selectedLevels, favorites: showFavoritesOnly })
+  }, [debouncedSearch, selectedLevels, showFavoritesOnly])
+
   const hasActiveFilters = selectedLevels.length > 0 || !!debouncedSearch
 
   const songs = showFavoritesOnly
@@ -48,12 +54,9 @@ const App = () => {
     : (songsQuery.data?.pages.flatMap((page) => page.data) ?? [])
 
   const handleToggleFavorite = (songId: string, shouldAdd: boolean) => {
-    if (shouldAdd) {
-      addFavorite.mutate(songId)
-    } else {
-      const favorite = favorites.find((f) => f.songId === songId)
-      if (favorite) removeFavorite.mutate(favorite.id)
-    }
+    if (shouldAdd) return addFavorite.mutate(songId)
+    const favorite = favorites.find((f) => f.songId === songId)
+    if (favorite) removeFavorite.mutate(favorite.id)
   }
 
   return (
