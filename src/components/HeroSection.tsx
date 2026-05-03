@@ -5,8 +5,12 @@ import heroMobile from '../../assets/yousician-hero-mobile.png'
 import heroMobile2x from '../../assets/yousician-hero-mobile@2x.png'
 import heroMobile3x from '../../assets/yousician-hero-mobile@3x.png'
 import { SearchBar } from '@/components/SearchBar'
+import { useFilterStore } from '@/store/useFilterStore'
 
-export const HeroSection = () => (
+export const HeroSection = () => {
+  const searchKey = useFilterStore((state) => state.searchKey)
+
+  return (
   <div className="relative w-full overflow-hidden">
     <picture>
       <source
@@ -28,7 +32,8 @@ export const HeroSection = () => (
       <p className="text-white/80 text-sm md:text-base max-w-md">
         Here are the most recent additions to the Yousician App. Start playing today!
       </p>
-      <SearchBar />
+      <SearchBar key={searchKey} />
     </div>
   </div>
-)
+  )
+}

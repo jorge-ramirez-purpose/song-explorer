@@ -4,7 +4,7 @@ import { describeArc } from '@/utils/arcPath'
 
 const CX = 50
 const CY = 50
-const R = 38
+const R = 40
 const STROKE_WIDTH = 3.5
 const ARC_SPAN = 100
 
@@ -23,8 +23,8 @@ export const LevelBadge = ({ level, isSelected = false }: TProps) => {
   const levelColor = getLevelColor(level)
 
   return (
-    <div className="size-10">
-      <svg viewBox="0 0 100 100" className="w-full h-full">
+    <div className="size-10 bg-black rounded-full flex items-center justify-center">
+      <svg viewBox="0 0 100 100" className="size-full">
         {isSelected ? (
           <circle cx={CX} cy={CY} r={R} fill="white" stroke="white" strokeWidth={STROKE_WIDTH} />
         ) : (
