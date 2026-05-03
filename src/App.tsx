@@ -1,4 +1,5 @@
 import { useSongsQuery } from '@/queries/useSongsQuery'
+import { useFavoriteSongsQuery } from '@/queries/useFavoriteSongsQuery'
 import { useFavoritesQuery } from '@/queries/useFavoritesQuery'
 import { useAddFavorite, useRemoveFavorite } from '@/queries/useFavoriteMutations'
 import { useFilterStore } from '@/store/useFilterStore'
@@ -10,16 +11,28 @@ import { ToastContainer } from '@/components/ToastContainer'
 import { FlakeyToggle } from '@/components/FlakeyToggle'
 
 const App = () => {
-  const { selectedLevels, debouncedSearch, isFilterOpen, toggleLevel, toggleFilterPanel, clearFilters } = useFilterStore()
-
-  const { data, hasNextPage, fetchNextPage, isLoading, isError, refetch } = useSongsQuery({
-    levels: selectedLevels.length > 0 ? selectedLevels : undefined,
-    search: debouncedSearch,
-  })
+  const { selectedLevels, debouncedSearch, isFilterOpen, showFavoritesOnly, toggleLevel, toggleFilterPanel, toggleFavoritesOnly, clearFilters } = useFilterStore()
 
   const { data: favorites = [] } = useFavoritesQuery()
   const addFavorite = useAddFavorite()
   const removeFavorite = useRemoveFavorite()
+
+  const favoriteSongIds = favorites.map((f) => f.songId)
+
+  const songsQuery = useSongsQuery({
+    levels: selectedLevels.length > 0 ? selectedLevels : undefined,
+    search: debouncedSearch,
+  })
+
+  const favoriteSongsQuery = useFavoriteSongsQuery({
+    songIds: favoriteSongIds,
+    levels: selectedLevels.length > 0 ? selectedLevels : undefined,
+    search: debouncedSearch,
+  })
+
+  const isLoading = showFavoritesOnly ? favoriteSongsQuery.isLoading : songsQuery.isLoading
+  const isError = showFavoritesOnly ? favoriteSongsQuery.isError : songsQuery.isError
+  const refetch = showFavoritesOnly ? favoriteSongsQuery.refetch : songsQuery.refetch
 
   const pendingSongIds = new Set<string>()
   if (addFavorite.isPending && addFavorite.variables) pendingSongIds.add(addFavorite.variables)
@@ -30,7 +43,9 @@ const App = () => {
 
   const hasActiveFilters = selectedLevels.length > 0 || !!debouncedSearch
 
-  const songs = data?.pages.flatMap((page) => page.data) ?? []
+  const songs = showFavoritesOnly
+    ? (favoriteSongIds.length === 0 ? [] : (favoriteSongsQuery.data?.data ?? []))
+    : (songsQuery.data?.pages.flatMap((page) => page.data) ?? [])
 
   const handleToggleFavorite = (songId: string, shouldAdd: boolean) => {
     if (shouldAdd) {
@@ -49,8 +64,11 @@ const App = () => {
           <FilterBar
             isOpen={isFilterOpen}
             selectedLevels={selectedLevels}
+            favoritesCount={favorites.length}
+            showFavoritesOnly={showFavoritesOnly}
             onTogglePanel={toggleFilterPanel}
             onToggleLevel={toggleLevel}
+            onToggleFavoritesOnly={toggleFavoritesOnly}
           />
         }
         songList={
@@ -58,11 +76,12 @@ const App = () => {
             songs={songs}
             favorites={favorites}
             isLoading={isLoading}
-            hasNextPage={hasNextPage ?? false}
+            hasNextPage={!showFavoritesOnly && (songsQuery.hasNextPage ?? false)}
             isError={isError}
             pendingSongIds={pendingSongIds}
             hasActiveFilters={hasActiveFilters}
-            onLoadMore={() => fetchNextPage()}
+            showFavoritesOnly={showFavoritesOnly}
+            onLoadMore={() => songsQuery.fetchNextPage()}
             onRetry={() => refetch()}
             onToggleFavorite={handleToggleFavorite}
             onClearFilters={clearFilters}

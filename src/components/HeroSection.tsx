@@ -29,7 +29,7 @@ export const HeroSection = () => {
       <h1 className="text-white font-black text-2xl md:text-4xl uppercase tracking-tight">
         New Songs Delivered Every Week
       </h1>
-      <p className="text-white/80 text-sm md:text-base max-w-md">
+      <p className="text-white/80 text-sm md:text-base">
         Here are the most recent additions to the Yousician App. Start playing today!
       </p>
       <SearchBar key={searchKey} />

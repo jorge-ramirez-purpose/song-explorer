@@ -13,7 +13,7 @@ export const SearchBar = () => {
   }, [debounced, setDebouncedSearch])
 
   return (
-    <div className="relative w-full max-w-md mx-auto">
+    <div className="relative w-full max-w-xl mx-auto">
       <input
         type="text"
         value={value}
