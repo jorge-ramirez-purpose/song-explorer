@@ -1,109 +1,93 @@
-# Yousician Webb App Developer Assignment
+# Song Explorer
 
-This exercise is meant to test your general knowledge and to show that you have well balanced skills in frontend development.
-Your assignment will be evaluated on the quality of your code, the compliance with the design, the responsiveness, the stability,
-and the ease of launching your project.
-Candidates usually manage to do the assignment in 6 hours, but feel free to take the necessary time.
+A responsive React application for browsing, searching, filtering, and favoriting songs. Built as a Yousician web developer assignment.
 
-Good luck! :)
+## Setup
 
-## Requirements
+### Prerequisites
 
--   The frontend must be built using [ReactJs](https://reactjs.org/)
--   You must use the provided API
--   Songs are displayed in an infinite scroll list
--   While songs are being fetched, a loader should be displayed
--   Songs can be filtered by level (song level goes from 1 to 15)
--   Songs can be searched
--   Songs can be added to favorite
--   Songs can be removed from favorite
--   The website must be responsive
+- Node.js 18+
+- npm
 
-Bonus:
+### Install and run
 
--   Add some tests
--   Want to show off? You can add any feature you desire
+```bash
+# Install dependencies (app + API)
+npm install && cd api && npm install && cd ..
 
-## Mockups and design
+# Start the API server (port 3004)
+npm run start-api
 
-Level indicator follow the following color pattern: 1-5 green, 6-10 orange, 10-15 red
-
-Each song item is composed of an image, a title, an artist, a level and a favorite button
-
-The font is Montserrat
-
-The following color palette is used
-
-    #000000
-    #101010
-    #383635
-    #383635
-    #939393
-    #ffffff
-    #6fc13e
-    #ff8e00
-    #dc001c
-
-## AVAILABLE APIs:
-
-A fake and intentionally flaky api is available for this assignment. In case need more information: [json server](https://github.com/typicode/json-server).
-
-To start it, you must go inside the api folder, install the dependencies `npm install` and run:
-
-`npm run start-api`
-
-Now if you go to http://localhost:3004 you should see the default json server page.
-
-The following routes are available:
-
-```
-GET /songs
-GET /favorites
-POST /favorites
-DELETE /favorites/<favoriteId>
+# In a separate terminal, start the dev server (port 5173)
+npm run dev
 ```
 
-### GET /songs Parameters
+Open http://localhost:5173 in your browser.
 
-Bellow are some parameters you will find useful to query the data you need.
+### Available scripts
 
-All the following parameters can be combined
+| Script | Description |
+| --- | --- |
+| `npm run dev` | Start Vite dev server |
+| `npm run build` | Type-check and build for production |
+| `npm run lint` | Run ESLint |
+| `npm run typecheck` | Run TypeScript type checking |
+| `npm test` | Run unit tests (Vitest) |
+| `npm run test:e2e` | Run E2E tests (Playwright) |
+| `npm run start-api` | Start the json-server API |
+
+## What was built
+
+### Core requirements
+
+- **Infinite scroll list** — songs load in pages of 20 using `useInfiniteQuery`; an `IntersectionObserver` sentinel triggers the next page when scrolled into view
+- **Loading indicator** — a spinner shows while songs are being fetched
+- **Level filtering** — songs can be filtered by level (1–15) via a toggleable badge grid in the filter bar
+- **Search** — debounced text search filters songs by artist or title
+- **Favorites** — songs can be added to and removed from favorites with a heart button; mutations use optimistic updates with automatic rollback on failure
+- **Responsive design** — fully responsive layout using Tailwind CSS utility classes
+
+### Bonus features
+
+- **Favorites-only view** — a dedicated view that shows only favorited songs, toggled via a heart button in the filter bar; supports the same search and level filters
+- **URL params** — filter state (`search`, `level`, `favorites`) is synced to the URL, enabling shareable and bookmarkable states
+- **Toast notifications** — success/error feedback on favorite mutations via a lightweight Zustand-based toast system
+- **Error handling** — error boundary for unexpected crashes, retry button on fetch failures, contextual empty states for no results vs no favorites
+- **Per-song loading state** — the heart button shows a loading state on the specific song being toggled, not globally
+- **Tests** — unit tests for utility functions and custom hooks (Vitest), E2E tests for core user flows (Playwright)
+
+## Technology decisions
+
+| Technology | Why |
+| --- | --- |
+| **Vite** | Fast HMR and build times; native ESM dev server; zero-config TypeScript and React support |
+| **TypeScript (strict)** | Catches bugs at compile time; combined with Zod for runtime validation of API responses, ensuring type safety across the entire data flow |
+| **TanStack Query** | Handles data fetching, caching, infinite scroll pagination, and optimistic mutations out of the box — avoids reinventing these patterns manually |
+| **Zustand** | Minimal API for global UI state (filters, toasts); no boilerplate compared to Redux; works well alongside TanStack Query for server state |
+| **Tailwind CSS** | Utility-first approach keeps styles co-located with markup; design tokens (colors, fonts) defined once in the theme config via a central constants file |
+| **Zod** | Runtime schema validation for API responses; generates TypeScript types from schemas, keeping them as a single source of truth |
+| **Vitest + happy-dom** | Native Vite integration for unit tests; happy-dom is faster and more compatible than jsdom for this Node version |
+| **Playwright** | Reliable browser-level E2E tests with route interception for controlling API responses |
+
+## Architecture
 
 ```
-GET /songs?_start=0&_limit=20&search_like=yousician&level=4
+src/
+  api/          # Typed API client (fetch + Zod validation)
+  components/   # UI components (presentational + composed)
+  constants/    # Centralized color palette and design tokens
+  hooks/        # Reusable hooks (useDebounce, useIntersectionObserver, useUrlParams)
+  queries/      # TanStack Query hooks (songs, favorites, mutations)
+  store/        # Zustand stores (filters, toasts)
+  types/        # Zod schemas and inferred TypeScript types
+  utils/        # Pure utility functions with unit tests
+e2e/            # Playwright E2E specs
 ```
 
-#### Filter
+Key design decisions:
 
-by level
-
-```
-GET /songs?level=1&level=2
-```
-
-by search ()
-
-```
-GET /songs?search_like=yousician
-```
-
-#### Slice
-
-Add `_start` and `_end` or `_limit` (an `X-Total-Count` header is included in the response)
-
-```
-GET /songs?_start=20&_end=40
-GET /songs?_start=20&_limit=20
-```
-
-_Works exactly as [Array.slice](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/slice) (i.e. `_start` is inclusive and `_end` exclusive)_
-
-### POST /favorites
-
-You can create a favorite by sending the following data to the api:
-
-```
-  {
-    "songId": <songId>
-  }
-```
+- **API client validates at the boundary** — all responses are parsed through Zod schemas before entering the app, so components can trust the data shape
+- **Server state vs UI state separation** — TanStack Query owns server data (songs, favorites); Zustand owns UI-only state (filter selections, toasts)
+- **URL as source of truth for filters** — the Zustand store hydrates from URL params on load, and a sync effect writes changes back to the address bar via `replaceState`
+- **Optimistic mutations with rollback** — favorites are updated in the cache immediately and rolled back if the API call fails, with toast notifications for feedback
+- **Vite proxy** — API requests are proxied to json-server in development, keeping the frontend on a single origin and avoiding CORS configuration
