@@ -80,6 +80,7 @@ const App = () => {
             isError={isError}
             pendingSongIds={pendingSongIds}
             hasActiveFilters={hasActiveFilters}
+            showFavoritesOnly={showFavoritesOnly}
             onLoadMore={() => songsQuery.fetchNextPage()}
             onRetry={() => refetch()}
             onToggleFavorite={handleToggleFavorite}

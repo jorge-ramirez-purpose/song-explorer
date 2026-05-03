@@ -13,6 +13,7 @@ type TProps = {
   isError: boolean
   pendingSongIds: Set<string>
   hasActiveFilters: boolean
+  showFavoritesOnly: boolean
   onLoadMore: () => void
   onRetry: () => void
   onToggleFavorite: (songId: string, isFavorite: boolean) => void
@@ -27,6 +28,7 @@ export const SongList = ({
   isError,
   pendingSongIds,
   hasActiveFilters,
+  showFavoritesOnly,
   onLoadMore,
   onRetry,
   onToggleFavorite,
@@ -53,6 +55,15 @@ const shouldShowError = isError && songs.length === 0
   const isEmpty = !isLoading && !isError && songs.length === 0
 
   if (isEmpty) {
+    if (showFavoritesOnly) {
+      return (
+        <div className="flex flex-col items-center justify-center py-12 px-6">
+          <h2 className="text-white text-lg font-semibold mb-2">No favorites yet</h2>
+          <p className="text-dark-text text-sm">Add songs to your favorites to see them here</p>
+        </div>
+      )
+    }
+
     return (
       <div className="flex flex-col items-center justify-center py-12 px-6">
         <h2 className="text-white text-lg font-semibold mb-2">No songs found</h2>
