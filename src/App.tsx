@@ -1,3 +1,4 @@
+import { useRef, useMemo } from 'react'
 import { useSongsQuery } from '@/queries/useSongsQuery'
 import { useFavoriteSongsQuery } from '@/queries/useFavoriteSongsQuery'
 import { useFavoritesQuery } from '@/queries/useFavoritesQuery'
@@ -14,8 +15,16 @@ const App = () => {
   const { selectedLevels, debouncedSearch, isFilterOpen, showFavoritesOnly, toggleLevel, toggleFilterPanel, toggleFavoritesOnly, clearFilters } = useFilterStore()
 
   const { data: favorites = [] } = useFavoritesQuery()
+  const addFavorite = useAddFavorite()
+  const removeFavorite = useRemoveFavorite()
 
-  const favoriteSongIds = favorites.map((f) => f.songId)
+  const stableFavoriteSongIdsRef = useRef<string[]>([])
+  const favoriteSongIds = useMemo(() => {
+    if (removeFavorite.isPending) return stableFavoriteSongIdsRef.current
+    const ids = favorites.map((f) => f.songId)
+    stableFavoriteSongIdsRef.current = ids
+    return ids
+  }, [favorites, removeFavorite.isPending])
 
   const songsQuery = useSongsQuery({
     levels: selectedLevels.length > 0 ? selectedLevels : undefined,
@@ -31,8 +40,6 @@ const App = () => {
   const isLoading = showFavoritesOnly ? favoriteSongsQuery.isLoading : songsQuery.isLoading
   const isError = showFavoritesOnly ? favoriteSongsQuery.isError : songsQuery.isError
   const refetch = showFavoritesOnly ? favoriteSongsQuery.refetch : songsQuery.refetch
-  const addFavorite = useAddFavorite()
-  const removeFavorite = useRemoveFavorite()
 
   const pendingSongIds = new Set<string>()
   if (addFavorite.isPending && addFavorite.variables) pendingSongIds.add(addFavorite.variables)
