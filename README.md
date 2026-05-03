@@ -55,6 +55,7 @@ Open http://localhost:5173 in your browser.
 - **Error handling** — error boundary for unexpected crashes, retry button on fetch failures, contextual empty states for no results vs no favorites
 - **Per-song loading state** — the heart button shows a loading state on the specific song being toggled, not globally
 - **Tests** — unit tests for utility functions and custom hooks (Vitest), E2E tests for core user flows (Playwright)
+- **Flakey toggle** — a dev-only button (bottom-right corner) to toggle the API's 20% failure mode on and off, useful for manually testing error handling and retry behavior
 
 ## Technology decisions
 
