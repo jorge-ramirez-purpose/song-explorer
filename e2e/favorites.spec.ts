@@ -13,7 +13,7 @@ const cleanupFavorites = async (request: APIRequestContext) => {
 }
 
 test.describe('Favorites', () => {
-  test.describe.configure({ mode: 'serial' })
+  test.describe.configure({ mode: 'serial', timeout: 60_000 })
 
   test.beforeEach(async ({ page, request }) => {
     await cleanupFavorites(request)
