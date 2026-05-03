@@ -1,4 +1,5 @@
 import { FilterIcon } from '@/components/icons/FilterIcon'
+import { FavoritesButton } from '@/components/FavoritesButton'
 import { LevelBadgeGrid } from '@/components/LevelBadgeGrid'
 import { cn } from '@/utils/cn'
 import { getRangeText } from '@/utils/getRangeText'
@@ -6,16 +7,33 @@ import { getRangeText } from '@/utils/getRangeText'
 type TProps = {
   isOpen: boolean
   selectedLevels: number[]
+  favoritesCount: number
+  showFavoritesOnly: boolean
   onTogglePanel: () => void
   onToggleLevel: (level: number) => void
+  onToggleFavoritesOnly: () => void
 }
 
-export const FilterBar = ({ isOpen, selectedLevels, onTogglePanel, onToggleLevel }: TProps) => {
+export const FilterBar = ({
+  isOpen,
+  selectedLevels,
+  favoritesCount,
+  showFavoritesOnly,
+  onTogglePanel,
+  onToggleLevel,
+  onToggleFavoritesOnly,
+}: TProps) => {
   const hasActiveFilter = !isOpen && selectedLevels.length > 0
 
   return (
     <div>
-      <div className="flex items-center justify-end gap-4 px-6 py-2">
+      <div className="flex items-center justify-between px-6 py-2">
+        <FavoritesButton
+          count={favoritesCount}
+          isActive={showFavoritesOnly}
+          onToggle={onToggleFavoritesOnly}
+        />
+        <div className="flex items-center gap-4">
         <div className="text-sm font-semibold uppercase tracking-wide">
           {isOpen ? 'Hide Filter' : 'Filter by Level'}
         </div>
@@ -31,6 +49,7 @@ export const FilterBar = ({ isOpen, selectedLevels, onTogglePanel, onToggleLevel
             <FilterIcon className={cn('size-4', hasActiveFilter ? 'fill-black' : 'fill-white')} />
           </span>
         </button>
+        </div>
       </div>
       {isOpen && <LevelBadgeGrid selectedLevels={selectedLevels} onToggleLevel={onToggleLevel} />}
     </div>

@@ -10,7 +10,7 @@ import { ToastContainer } from '@/components/ToastContainer'
 import { FlakeyToggle } from '@/components/FlakeyToggle'
 
 const App = () => {
-  const { selectedLevels, debouncedSearch, isFilterOpen, toggleLevel, toggleFilterPanel, clearFilters } = useFilterStore()
+  const { selectedLevels, debouncedSearch, isFilterOpen, showFavoritesOnly, toggleLevel, toggleFilterPanel, toggleFavoritesOnly, clearFilters } = useFilterStore()
 
   const { data, hasNextPage, fetchNextPage, isLoading, isError, refetch } = useSongsQuery({
     levels: selectedLevels.length > 0 ? selectedLevels : undefined,
@@ -49,8 +49,11 @@ const App = () => {
           <FilterBar
             isOpen={isFilterOpen}
             selectedLevels={selectedLevels}
+            favoritesCount={favorites.length}
+            showFavoritesOnly={showFavoritesOnly}
             onTogglePanel={toggleFilterPanel}
             onToggleLevel={toggleLevel}
+            onToggleFavoritesOnly={toggleFavoritesOnly}
           />
         }
         songList={
