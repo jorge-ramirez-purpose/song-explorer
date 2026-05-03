@@ -1,5 +1,4 @@
 import { LevelBadge } from '@/components/LevelBadge'
-import { cn } from '@/utils/cn'
 
 type TProps = {
   selectedLevels: number[]
@@ -17,10 +16,9 @@ export const LevelBadgeGrid = ({ selectedLevels, onToggleLevel }: TProps) => (
           <button
             key={level}
             onClick={() => onToggleLevel(level)}
-            className={cn('transition-opacity', selectedLevels.includes(level) ? 'opacity-100' : 'opacity-50 hover:opacity-75')}
             aria-pressed={selectedLevels.includes(level)}
           >
-            <LevelBadge level={level} size="small" />
+            <LevelBadge level={level} size="small" isSelected={selectedLevels.includes(level)} />
           </button>
         ))}
       </div>

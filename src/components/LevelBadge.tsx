@@ -17,46 +17,51 @@ const SEGMENTS = [
 type TProps = {
   level: number
   size?: 'small' | 'large'
+  isSelected?: boolean
 }
 
-export const LevelBadge = ({ level, size = 'large' }: TProps) => {
+export const LevelBadge = ({ level, size = 'large', isSelected = false }: TProps) => {
   const sizeClass = size === 'small' ? 'w-8 h-8' : 'w-10 h-10'
   const levelColor = getLevelColor(level)
 
   return (
     <div className={sizeClass}>
       <svg viewBox="0 0 100 100" className="w-full h-full">
-        {SEGMENTS.map(({ startAngle, levelMin }) => {
-          const filled = Math.min(Math.max(level - levelMin, 0), 5) / 5
-          const filledAngle = filled * ARC_SPAN
+        {isSelected ? (
+          <circle cx={CX} cy={CY} r={R} fill="white" stroke="white" strokeWidth={STROKE_WIDTH} />
+        ) : (
+          SEGMENTS.map(({ startAngle, levelMin }) => {
+            const filled = Math.min(Math.max(level - levelMin, 0), 5) / 5
+            const filledAngle = filled * ARC_SPAN
 
-          return (
-            <g key={startAngle}>
-              <path
-                d={describeArc(CX, CY, R, startAngle, startAngle + ARC_SPAN)}
-                fill="none"
-                stroke={colors.darkBorder}
-                strokeWidth={STROKE_WIDTH}
-                strokeLinecap="round"
-              />
-              {filledAngle > 0 && (
+            return (
+              <g key={startAngle}>
                 <path
-                  d={describeArc(CX, CY, R, startAngle, startAngle + filledAngle)}
+                  d={describeArc(CX, CY, R, startAngle, startAngle + ARC_SPAN)}
                   fill="none"
-                  stroke={levelColor}
+                  stroke={colors.darkBorder}
                   strokeWidth={STROKE_WIDTH}
                   strokeLinecap="round"
                 />
-              )}
-            </g>
-          )
-        })}
+                {filledAngle > 0 && (
+                  <path
+                    d={describeArc(CX, CY, R, startAngle, startAngle + filledAngle)}
+                    fill="none"
+                    stroke={levelColor}
+                    strokeWidth={STROKE_WIDTH}
+                    strokeLinecap="round"
+                  />
+                )}
+              </g>
+            )
+          })
+        )}
         <text
           x="50"
           y="50"
           textAnchor="middle"
           dominantBaseline="central"
-          fill="white"
+          fill={isSelected ? 'black' : 'white'}
           fontWeight="700"
           fontSize={38}
           fontFamily="Montserrat, sans-serif"
