@@ -14,11 +14,11 @@ type TFilterStore = {
   clearFilters: () => void
 }
 
-const { q, levels, favorites } = readParams()
+const { search, levels, favorites } = readParams()
 
 export const useFilterStore = create<TFilterStore>((set) => ({
   selectedLevels: levels,
-  debouncedSearch: q,
+  debouncedSearch: search,
   isFilterOpen: false,
   searchKey: 0,
   showFavoritesOnly: favorites,

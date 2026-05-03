@@ -1,5 +1,5 @@
 export type TUrlParams = {
-  q: string
+  search: string
   levels: number[]
   favorites: boolean
 }
@@ -9,11 +9,11 @@ type TUrlParamUpdates = Partial<TUrlParams>
 export const readParams = (): TUrlParams => {
   const params = new URLSearchParams(window.location.search)
   return {
-    q: params.get('q') ?? '',
+    search: params.get('search') ?? '',
     levels: params
       .getAll('level')
       .map(Number)
-      .filter((n) => !isNaN(n) && n > 0),
+      .filter((level) => !isNaN(level) && level > 0),
     favorites: params.get('favorites') === 'true',
   }
 }
@@ -21,9 +21,9 @@ export const readParams = (): TUrlParams => {
 export const writeParams = (updates: TUrlParamUpdates): void => {
   const params = new URLSearchParams(window.location.search)
 
-  if ('q' in updates) {
-    if (updates.q) params.set('q', updates.q)
-    else params.delete('q')
+  if ('search' in updates) {
+    if (updates.search) params.set('search', updates.search)
+    else params.delete('search')
   }
 
   if ('levels' in updates) {
