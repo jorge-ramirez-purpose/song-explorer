@@ -22,7 +22,7 @@ export const FilterBar = ({ isOpen, selectedLevels, onTogglePanel, onToggleLevel
         <button
           onClick={onTogglePanel}
           aria-label={isOpen ? 'Hide filter' : 'Show filter'}
-          className={cn('flex items-center transition-opacity hover:opacity-70 border-2 rounded-full overflow-hidden', hasActiveFilter ? 'border-white' : 'border-transparent')}
+          className={cn('flex items-center transition-opacity hover:opacity-70 border-2 border-white rounded-full overflow-hidden')}
         >
           {hasActiveFilter && (
             <span className="pl-4 pr-3 text-sm font-semibold">{getRangeText(selectedLevels)}</span>
