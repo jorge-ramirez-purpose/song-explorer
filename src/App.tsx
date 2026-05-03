@@ -1,4 +1,3 @@
-import { useRef, useMemo } from 'react'
 import { useSongsQuery } from '@/queries/useSongsQuery'
 import { useFavoriteSongsQuery } from '@/queries/useFavoriteSongsQuery'
 import { useFavoritesQuery } from '@/queries/useFavoritesQuery'
@@ -18,13 +17,7 @@ const App = () => {
   const addFavorite = useAddFavorite()
   const removeFavorite = useRemoveFavorite()
 
-  const stableFavoriteSongIdsRef = useRef<string[]>([])
-  const favoriteSongIds = useMemo(() => {
-    if (removeFavorite.isPending) return stableFavoriteSongIdsRef.current
-    const ids = favorites.map((f) => f.songId)
-    stableFavoriteSongIdsRef.current = ids
-    return ids
-  }, [favorites, removeFavorite.isPending])
+  const favoriteSongIds = favorites.map((f) => f.songId)
 
   const songsQuery = useSongsQuery({
     levels: selectedLevels.length > 0 ? selectedLevels : undefined,
