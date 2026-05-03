@@ -28,11 +28,14 @@ export const FilterBar = ({
   return (
     <div>
       <div className="flex items-center justify-between px-6 py-2">
+        <div className='flex justify-between items-center gap-4'>
+        
         <FavoritesButton
           count={favoritesCount}
           isActive={showFavoritesOnly}
           onToggle={onToggleFavoritesOnly}
         />
+        </div>
         <div className="flex items-center gap-4">
         <div className="text-sm font-semibold uppercase tracking-wide">
           {isOpen ? 'Hide Filter' : 'Filter by Level'}

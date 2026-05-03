@@ -9,25 +9,23 @@ type TProps = {
 }
 
 export const FavoritesButton = ({ count, isActive, onToggle }: TProps) => (
+  
   <button
     onClick={onToggle}
     aria-pressed={isActive}
     className={cn(
-      'flex items-center transition-opacity hover:opacity-70 border-2 border-white rounded-full',
-      isActive ? 'gap-2 pl-4 pr-1' : 'p-1',
+      'flex items-center transition-opacity hover:opacity-70 gap-2 rounded-full pr-3 border-2',
+      isActive ? 'border-white' : 'border-transparent'
     )}
   >
-    {isActive && (
-      <span className="text-sm font-semibold">
-        Favorites ({count})
-      </span>
-    )}
-    <span className={cn('p-1.5 rounded-full', isActive ? 'bg-white m-0.5' : '')}>
+     
+    <span className={cn('p-2 rounded-full', isActive ? 'bg-white' : '')}>
       {isActive ? (
         <HeartIcon className="size-4 fill-black" />
       ) : (
         <HeartOutlineIcon className="size-4 fill-white" />
       )}
     </span>
+    <span>{count}</span>
   </button>
 )
