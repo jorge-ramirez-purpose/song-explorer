@@ -6,19 +6,31 @@ describe('getRangeText', () => {
     expect(getRangeText([])).toBe('')
   })
 
-  it('returns single level as range', () => {
-    expect(getRangeText([5])).toBe('5 - 5')
+  it('returns a single level as just that number', () => {
+    expect(getRangeText([5])).toBe('5')
   })
 
-  it('returns range with min and max', () => {
-    expect(getRangeText([3, 7])).toBe('3 - 7')
+  it('returns a contiguous sequence as a range', () => {
+    expect(getRangeText([3, 4, 5, 6])).toBe('3 - 6')
   })
 
-  it('sorts unsorted levels before calculating range', () => {
-    expect(getRangeText([10, 1, 5])).toBe('1 - 10')
+  it('returns two consecutive levels individually', () => {
+    expect(getRangeText([11, 12])).toBe('11, 12')
   })
 
-  it('handles duplicate levels', () => {
-    expect(getRangeText([15, 5, 15, 1, 5])).toBe('1 - 15')
+  it('returns non-contiguous levels individually', () => {
+    expect(getRangeText([1, 2, 4, 7, 10])).toBe('1, 2, 4, 7, 10')
+  })
+
+  it('returns mixed runs as ranges and individual values', () => {
+    expect(getRangeText([1, 2, 3, 5, 7])).toBe('1 - 3, 5, 7')
+  })
+
+  it('sorts unsorted input before grouping', () => {
+    expect(getRangeText([10, 1, 5])).toBe('1, 5, 10')
+  })
+
+  it('deduplicates levels before grouping', () => {
+    expect(getRangeText([15, 5, 15, 1, 5])).toBe('1, 5, 15')
   })
 })
