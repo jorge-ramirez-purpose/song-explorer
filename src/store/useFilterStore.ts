@@ -2,12 +2,10 @@ import { create } from 'zustand'
 
 type TFilterStore = {
   selectedLevels: number[]
-  searchQuery: string
   debouncedSearch: string
   isFilterOpen: boolean
   searchKey: number
   toggleLevel: (level: number) => void
-  setSearchQuery: (query: string) => void
   setDebouncedSearch: (query: string) => void
   toggleFilterPanel: () => void
   clearFilters: () => void
@@ -15,7 +13,6 @@ type TFilterStore = {
 
 export const useFilterStore = create<TFilterStore>((set) => ({
   selectedLevels: [],
-  searchQuery: '',
   debouncedSearch: '',
   isFilterOpen: false,
   searchKey: 0,
@@ -26,8 +23,6 @@ export const useFilterStore = create<TFilterStore>((set) => ({
         ? state.selectedLevels.filter((l) => l !== level)
         : [...state.selectedLevels, level].sort((a, b) => a - b),
     })),
-
-  setSearchQuery: (query) => set({ searchQuery: query }),
 
   setDebouncedSearch: (query) => set({ debouncedSearch: query }),
 
