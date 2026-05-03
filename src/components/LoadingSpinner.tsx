@@ -7,7 +7,7 @@ export const LoadingSpinner = ({ size = 'large' }: TProps) => {
   const paddingClasses = size === 'small' ? 'py-2' : 'py-8'
 
   return (
-    <div className={`flex justify-center items-center ${paddingClasses}`}>
+    <div data-testid="loading-spinner" className={`flex justify-center items-center ${paddingClasses}`}>
       <div className={`animate-spin rounded-full ${sizeClasses} border-dark-border border-t-brand`} />
     </div>
   )

@@ -12,7 +12,7 @@ type TProps = {
 }
 
 export const SongCard = ({ song, isFavorite, onToggleFavorite, isEven, isFavoritesLoading }: TProps) => (
-  <div className={cn('flex items-center gap-8 p-3', isEven ? 'bg-dark-bg' : 'bg-black')}>
+  <div data-testid="song-card" className={cn('flex items-center gap-8 p-3', isEven ? 'bg-dark-bg' : 'bg-black')}>
     <img
       src={song.images}
       alt={song.title}
