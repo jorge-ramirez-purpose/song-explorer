@@ -20,11 +20,7 @@ export const FlakeyToggle = () => {
   return (
     <button
       onClick={toggle}
-      className="fixed bottom-4 right-4 text-xs font-semibold px-3 py-2 rounded-full border transition-colors"
-      style={{
-        borderColor: isFlakey ? '#dc001c' : '#6fc13e',
-        color: isFlakey ? '#dc001c' : '#6fc13e',
-      }}
+      className={`fixed bottom-4 right-4 text-xs font-semibold px-3 py-2 rounded-full border transition-colors ${isFlakey ? 'border-red text-red' : 'border-green text-green'}`}
     >
       API: {isFlakey ? 'Flakey' : 'Stable'}
     </button>

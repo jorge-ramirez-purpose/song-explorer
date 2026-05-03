@@ -61,7 +61,7 @@ const App = () => {
         }
       />
       <ToastContainer />
-      <FlakeyToggle />
+      {import.meta.env.DEV && <FlakeyToggle />}
     </>
   )
 }
