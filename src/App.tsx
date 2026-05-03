@@ -48,12 +48,9 @@ const App = () => {
     : (songsQuery.data?.pages.flatMap((page) => page.data) ?? [])
 
   const handleToggleFavorite = (songId: string, shouldAdd: boolean) => {
-    if (shouldAdd) {
-      addFavorite.mutate(songId)
-    } else {
-      const favorite = favorites.find((f) => f.songId === songId)
-      if (favorite) removeFavorite.mutate(favorite.id)
-    }
+    if (shouldAdd) return addFavorite.mutate(songId)
+    const favorite = favorites.find((f) => f.songId === songId)
+    if (favorite) removeFavorite.mutate(favorite.id)
   }
 
   return (
