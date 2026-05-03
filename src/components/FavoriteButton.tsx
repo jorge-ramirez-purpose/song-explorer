@@ -15,9 +15,9 @@ export const FavoriteButton = ({ isFavorite, isLoading, onToggle }: TProps) => (
     aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
   >
     {isFavorite ? (
-      <HeartIcon className="w-6 h-6 fill-red text-red" />
+      <HeartIcon className="size-6 fill-red text-red" />
     ) : (
-      <HeartOutlineIcon className="w-6 h-6 fill-white" />
+      <HeartOutlineIcon className="size-6 fill-white" />
     )}
   </button>
 )

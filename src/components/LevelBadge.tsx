@@ -16,16 +16,14 @@ const SEGMENTS = [
 
 type TProps = {
   level: number
-  size?: 'small' | 'large'
   isSelected?: boolean
 }
 
-export const LevelBadge = ({ level, size = 'large', isSelected = false }: TProps) => {
-  const sizeClass = size === 'small' ? 'w-8 h-8' : 'w-10 h-10'
+export const LevelBadge = ({ level, isSelected = false }: TProps) => {
   const levelColor = getLevelColor(level)
 
   return (
-    <div className={sizeClass}>
+    <div className="size-10">
       <svg viewBox="0 0 100 100" className="w-full h-full">
         {isSelected ? (
           <circle cx={CX} cy={CY} r={R} fill="white" stroke="white" strokeWidth={STROKE_WIDTH} />

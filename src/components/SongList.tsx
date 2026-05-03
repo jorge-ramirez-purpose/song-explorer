@@ -47,7 +47,7 @@ const shouldShowError = isError && songs.length === 0
   }
 
   return (
-    <div className="divide-y divide-dark-border">
+    <div>
       {songs.map((song, index) => (
         <SongCard
           key={song.id}
