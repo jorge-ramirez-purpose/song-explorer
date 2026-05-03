@@ -5,7 +5,7 @@ export const SongSchema = z.object({
   title: z.string(),
   artist: z.string(),
   images: z.string().url(),
-  level: z.number().int().min(1).max(15),
+  level: z.number().int().min(0).max(15),
   search: z.string(),
 })
 
