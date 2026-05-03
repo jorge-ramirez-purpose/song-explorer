@@ -5,9 +5,11 @@ type TFilterStore = {
   debouncedSearch: string
   isFilterOpen: boolean
   searchKey: number
+  showFavoritesOnly: boolean
   toggleLevel: (level: number) => void
   setDebouncedSearch: (query: string) => void
   toggleFilterPanel: () => void
+  toggleFavoritesOnly: () => void
   clearFilters: () => void
 }
 
@@ -16,6 +18,7 @@ export const useFilterStore = create<TFilterStore>((set) => ({
   debouncedSearch: '',
   isFilterOpen: false,
   searchKey: 0,
+  showFavoritesOnly: false,
 
   toggleLevel: (level) =>
     set((state) => ({
@@ -28,11 +31,18 @@ export const useFilterStore = create<TFilterStore>((set) => ({
 
   toggleFilterPanel: () => set((state) => ({ isFilterOpen: !state.isFilterOpen })),
 
+  toggleFavoritesOnly: () =>
+    set((state) => ({
+      showFavoritesOnly: !state.showFavoritesOnly,
+      isFilterOpen: false,
+    })),
+
   clearFilters: () =>
     set((state) => ({
       selectedLevels: [],
       debouncedSearch: '',
       isFilterOpen: false,
+      showFavoritesOnly: false,
       searchKey: state.searchKey + 1,
     })),
 }))
