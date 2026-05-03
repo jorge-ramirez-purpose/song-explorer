@@ -4,7 +4,8 @@ import { useFilterStore } from '@/store/useFilterStore'
 import { SearchIcon } from '@/components/icons/SearchIcon'
 
 export const SearchBar = () => {
-  const [value, setValue] = useState('')
+  const initialSearch = useFilterStore((state) => state.debouncedSearch)
+  const [value, setValue] = useState(initialSearch)
   const debounced = useDebounce(value)
   const setDebouncedSearch = useFilterStore((state) => state.setDebouncedSearch)
 

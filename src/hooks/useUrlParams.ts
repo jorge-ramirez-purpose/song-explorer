@@ -1,4 +1,4 @@
-type TUrlParams = {
+export type TUrlParams = {
   q: string
   levels: number[]
   favorites: boolean
@@ -6,7 +6,7 @@ type TUrlParams = {
 
 type TUrlParamUpdates = Partial<TUrlParams>
 
-const readParams = (): TUrlParams => {
+export const readParams = (): TUrlParams => {
   const params = new URLSearchParams(window.location.search)
   return {
     q: params.get('q') ?? '',
@@ -18,7 +18,7 @@ const readParams = (): TUrlParams => {
   }
 }
 
-const writeParams = (updates: TUrlParamUpdates): void => {
+export const writeParams = (updates: TUrlParamUpdates): void => {
   const params = new URLSearchParams(window.location.search)
 
   if ('q' in updates) {
