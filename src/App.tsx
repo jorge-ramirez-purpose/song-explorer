@@ -1,4 +1,5 @@
 import { useSongsQuery } from '@/queries/useSongsQuery'
+import { useFavoriteSongsQuery } from '@/queries/useFavoriteSongsQuery'
 import { useFavoritesQuery } from '@/queries/useFavoritesQuery'
 import { useAddFavorite, useRemoveFavorite } from '@/queries/useFavoriteMutations'
 import { useFilterStore } from '@/store/useFilterStore'
@@ -12,12 +13,24 @@ import { FlakeyToggle } from '@/components/FlakeyToggle'
 const App = () => {
   const { selectedLevels, debouncedSearch, isFilterOpen, showFavoritesOnly, toggleLevel, toggleFilterPanel, toggleFavoritesOnly, clearFilters } = useFilterStore()
 
-  const { data, hasNextPage, fetchNextPage, isLoading, isError, refetch } = useSongsQuery({
+  const { data: favorites = [] } = useFavoritesQuery()
+
+  const favoriteSongIds = favorites.map((f) => f.songId)
+
+  const songsQuery = useSongsQuery({
     levels: selectedLevels.length > 0 ? selectedLevels : undefined,
     search: debouncedSearch,
   })
 
-  const { data: favorites = [] } = useFavoritesQuery()
+  const favoriteSongsQuery = useFavoriteSongsQuery({
+    songIds: favoriteSongIds,
+    levels: selectedLevels.length > 0 ? selectedLevels : undefined,
+    search: debouncedSearch,
+  })
+
+  const isLoading = showFavoritesOnly ? favoriteSongsQuery.isLoading : songsQuery.isLoading
+  const isError = showFavoritesOnly ? favoriteSongsQuery.isError : songsQuery.isError
+  const refetch = showFavoritesOnly ? favoriteSongsQuery.refetch : songsQuery.refetch
   const addFavorite = useAddFavorite()
   const removeFavorite = useRemoveFavorite()
 
@@ -30,7 +43,9 @@ const App = () => {
 
   const hasActiveFilters = selectedLevels.length > 0 || !!debouncedSearch
 
-  const songs = data?.pages.flatMap((page) => page.data) ?? []
+  const songs = showFavoritesOnly
+    ? (favoriteSongsQuery.data?.data ?? [])
+    : (songsQuery.data?.pages.flatMap((page) => page.data) ?? [])
 
   const handleToggleFavorite = (songId: string, shouldAdd: boolean) => {
     if (shouldAdd) {
@@ -61,11 +76,11 @@ const App = () => {
             songs={songs}
             favorites={favorites}
             isLoading={isLoading}
-            hasNextPage={hasNextPage ?? false}
+            hasNextPage={!showFavoritesOnly && (songsQuery.hasNextPage ?? false)}
             isError={isError}
             pendingSongIds={pendingSongIds}
             hasActiveFilters={hasActiveFilters}
-            onLoadMore={() => fetchNextPage()}
+            onLoadMore={() => songsQuery.fetchNextPage()}
             onRetry={() => refetch()}
             onToggleFavorite={handleToggleFavorite}
             onClearFilters={clearFilters}
