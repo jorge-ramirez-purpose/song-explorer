@@ -21,7 +21,13 @@ const App = () => {
   const addFavorite = useAddFavorite()
   const removeFavorite = useRemoveFavorite()
 
-  const isFavoritesLoading = addFavorite.isPending || removeFavorite.isPending
+  const pendingSongIds = new Set<string>()
+  if (addFavorite.isPending && addFavorite.variables) pendingSongIds.add(addFavorite.variables)
+  if (removeFavorite.isPending && removeFavorite.variables) {
+    const pending = favorites.find((f) => f.id === removeFavorite.variables)
+    if (pending) pendingSongIds.add(pending.songId)
+  }
+
   const hasActiveFilters = selectedLevels.length > 0 || !!debouncedSearch
 
   const songs = data?.pages.flatMap((page) => page.data) ?? []
@@ -54,7 +60,7 @@ const App = () => {
             isLoading={isLoading}
             hasNextPage={hasNextPage ?? false}
             isError={isError}
-            isFavoritesLoading={isFavoritesLoading}
+            pendingSongIds={pendingSongIds}
             hasActiveFilters={hasActiveFilters}
             onLoadMore={() => fetchNextPage()}
             onRetry={() => refetch()}

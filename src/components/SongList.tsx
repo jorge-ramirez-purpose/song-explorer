@@ -11,7 +11,7 @@ type TProps = {
   isLoading: boolean
   hasNextPage: boolean
   isError: boolean
-  isFavoritesLoading: boolean
+  pendingSongIds: Set<string>
   hasActiveFilters: boolean
   onLoadMore: () => void
   onRetry: () => void
@@ -25,7 +25,7 @@ export const SongList = ({
   isLoading,
   hasNextPage,
   isError,
-  isFavoritesLoading,
+  pendingSongIds,
   hasActiveFilters,
   onLoadMore,
   onRetry,
@@ -78,7 +78,7 @@ const shouldShowError = isError && songs.length === 0
           isFavorite={favoritesMap.has(song.id)}
           onToggleFavorite={() => onToggleFavorite(song.id, !favoritesMap.has(song.id))}
           isEven={index % 2 === 0}
-          isFavoritesLoading={isFavoritesLoading}
+          isFavoritesLoading={pendingSongIds.has(song.id)}
         />
       ))}
 
