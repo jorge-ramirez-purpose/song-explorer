@@ -8,11 +8,12 @@ export const getRangeText = (levels: number[]): string => {
 
   const runs = sorted.reduce<number[][]>((groups, level) => {
     const lastGroup = groups[groups.length - 1]
-    if (lastGroup && lastGroup[lastGroup.length - 1] === level - 1) {
+    const isConsecutive = lastGroup && lastGroup[lastGroup.length - 1] === level - 1
+    if (isConsecutive) {
       lastGroup.push(level)
-    } else {
-      groups.push([level])
+      return groups
     }
+    groups.push([level])
     return groups
   }, [])
 

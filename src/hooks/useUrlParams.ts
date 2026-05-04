@@ -22,8 +22,8 @@ export const writeParams = (updates: TUrlParamUpdates): void => {
   const params = new URLSearchParams(window.location.search)
 
   if ('search' in updates) {
+    params.delete('search')
     if (updates.search) params.set('search', updates.search)
-    else params.delete('search')
   }
 
   if ('levels' in updates) {
@@ -32,8 +32,8 @@ export const writeParams = (updates: TUrlParamUpdates): void => {
   }
 
   if ('favorites' in updates) {
+    params.delete('favorites')
     if (updates.favorites) params.set('favorites', 'true')
-    else params.delete('favorites')
   }
 
   const search = params.toString()
