@@ -1,5 +1,5 @@
+import { TToast } from '@/store/types'
 import { cn } from '@/utils/cn'
-import { type TToast } from '@/store/useToastStore'
 
 type TProps = {
   toast: TToast

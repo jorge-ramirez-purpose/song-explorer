@@ -1,19 +1,6 @@
 import { SongSchema, type TSong } from '@/types/song'
 import { apiGet } from './client'
-import { TApiListResult } from './types'
-
-export type TFetchSongsParams = {
-  start: number
-  limit: number
-  levels?: number[]
-  search?: string
-}
-
-export type TFetchSongsByIdsParams = {
-  ids: string[]
-  levels?: number[]
-  search?: string
-}
+import { TApiListResult, TFetchSongsByIdsParams, TFetchSongsParams } from './types'
 
 export const fetchSongsByIds = (params: TFetchSongsByIdsParams): Promise<TApiListResult<TSong>> => {
   const { ids, levels, search } = params

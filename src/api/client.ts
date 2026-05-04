@@ -1,8 +1,6 @@
 import { z } from 'zod'
 import { TApiListResult } from './types'
 
-
-
 export const apiGet = async <T>(
   url: string,
   schema: z.ZodType<T>,
