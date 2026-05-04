@@ -1,10 +1,5 @@
 import { create } from 'zustand'
-
-export type TToast = {
-  id: string
-  message: string
-  type: 'success' | 'error'
-}
+import { TToast } from './types'
 
 type TToastStore = {
   toasts: TToast[]
