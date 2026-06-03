@@ -1,6 +1,6 @@
 # Song Explorer
 
-A responsive React application for browsing, searching, filtering, and favoriting songs. Built as a Yousician web developer assignment.
+A responsive React application for browsing, searching, filtering, and favoriting songs.
 
 ## Setup
 
